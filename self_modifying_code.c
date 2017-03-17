@@ -49,10 +49,11 @@ int main(int argc, char* argv[])
     uintptr_t start = (uintptr_t) &hello;
     uintptr_t end = start + 128;
 
-    // Calculate start of page for mprotect.
+    // Calculate start of page for mprotect
     // Aligns pagestart to page boundary
-    // How does this work?
-    uintptr_t pagestart = start & -pagesize;
+    // This masks only the lower order bits to get the page boundary
+    // (~(pagesize - 1) is the same as (-pagesize)
+    uintptr_t pagestart = start & (~(pagesize - 1));
     
     // Change memory page protection
     // Note: setting the page to PROT_WRITE alone means you're not allowed to read it anymore
